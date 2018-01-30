@@ -24,6 +24,7 @@ run; 
 
 ## Selecting 
 
+
 Can only have ONE WHERE statement PER step, last one wins.
 
 
@@ -93,8 +94,31 @@ where EMPLOYEE_ID is missing;
 % - any number of characters
 _ - single character
 
+
 ```
 where Name like '%N';
 where Name like 'T_m';
 where Name like 
 ```
+
+Determines the key column.
+```
+proc print data=...;
+    where Customer_Age = 21;
+    id Customer_ID;
+    ...;
+run;
+```
+
+
+## Sorting
+
+
+
+
+
+
+
+
+
+
