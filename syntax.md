@@ -589,3 +589,28 @@ Merle Hieds Trainee $24,025
 ;
 run;
 ```
+
+## DSD
+
+- Changes default delimiter to comma
+- Treats consecutive delimiters as missing
+- Allows embedded delimiters if surrounded by quotation marks.
+
+```
+data ...;
+    infile "&path\phone2.csv" dsd;  /* usually a best practice to use */
+    ...
+run;
+```
+
+### MISSOVER
+
+- Prevents SAS from loading new record when end of record is reached.
+- Handles case when you're missing a variable at the end of a record.
+
+```
+data ...;
+    infile "..." missover;  /* can be used with other options (e.g. dsd, dlm) */
+    ...;
+run;
+```
