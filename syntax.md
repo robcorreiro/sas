@@ -14,10 +14,10 @@
 ## Printing 
 
 <pre>
-/* Select specific vars when printing and sums specific */ 
+/\* Select specific vars when printing and sums specific \*/ 
 proc print data=orion.sales; 
     var Last_Name First_Name Salary; 
-    <b>sum Salary;  * order usually not important </b>
+    <b>sum Salary;  \* order usually not important </b>
 run; 
 </pre>
 
@@ -33,7 +33,7 @@ The **var** keyword picks what variables are included in the output.
 <pre>
 proc print data=orion.sales; 
     var Last_Name First_Name Salary; 
-    <b>where Salary < 25500;  * no quotes needed for numeric</b>
+    <b>where Salary < 25500;  \* no quotes needed for numeric</b>
 run; 
 
 proc print data=orion.sales; 
