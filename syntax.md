@@ -415,3 +415,24 @@ data work.auemps;
     Bonus = Salary * 0.10;
 run;    
 </pre>
+
+
+# Reading Data
+
+## Spreadsheets
+
+- Requires <b>SAS/ACCESS Interface to PC Files</b> license
+ 
+ Add access as a library.
+ 
+ <pre>
+ <b>LIBNAME</b> <em>libref <engine> "workbook-name" \<options\>;</em>
+ </pre>
+ 
+ ```
+ libname orionx excel "&path\sales.xls";
+ ```
+
+
+
+
