@@ -245,7 +245,7 @@ EUROXw.d
 MMDDYY10.
 </pre>
 
-# Examples
+## Examples
 
 <pre>
 title 'Contents of Orion.Sales';
@@ -266,4 +266,22 @@ proc print data=orion.sales label split='*';
 	format salary dollar8. hire_date monyy7.;
 run;
 title;
+</pre>
+
+# User-Defined Formats
+
+<pre>
+<b>PROC FORMAT</b>;
+    <b>VALUE</b> <em>format-name range1 = 'label'
+                          range2 = 'label'
+                                  ...;
+RUN;
+</pre>
+
+<pre>
+proc format;
+	value <b>$ctrymt</b> 'AU'='Australia'
+                         'US'='United States'
+                         other='Miscoded';
+run;
 </pre>
