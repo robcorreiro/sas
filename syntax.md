@@ -273,7 +273,7 @@ title;
 <pre>
 <b>PROC FORMAT</b>;
     <b>VALUE</b> <em>format-name range1 = 'label'
-                          range2 = 'label'
+                          range2 = 'label'</em>
                                   ...;
 RUN;
 </pre>
@@ -322,3 +322,20 @@ proc print data=...;
     <b>format Country $ctryfmt.;</b>  * Note the required period 
 run;
 </pre>
+
+
+# Reading SAS Data Sets
+
+## Subsets
+
+Create new or update existing variables with an **assignment** statement.
+
+```
+data work.subset1;  /* OUTPUT */
+    set orion.sales;  /* INPUT - read one at a time */
+    where Country='AU' and
+          Job_Title contains 'Rep' and
+          Hire_Date < '01jan2000'd;
+    Bonus = Salary * 0.10;  /* assignment */
+run;          
+```
