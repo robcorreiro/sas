@@ -11,7 +11,9 @@
 *-----------------------------------------*; 
 ```
  
-## Printing 
+---
+ 
+# Printing 
 
 <pre>
 /* Select specific vars when printing and sums specific */ 
@@ -21,8 +23,9 @@ proc print data=orion.sales; 
 run; 
 </pre>
 
+---
 
-## Selecting 
+# Selecting 
 
 
 Can only have ONE WHERE statement PER step, last one wins.
@@ -46,6 +49,16 @@ run;
 ## Date Constant
 ```
 'ddmmm<yy>yy'd
+```
+
+## Name Literal
+
+Permit special characters in data set names.
+
+```
+'foo'n
+
+orionx.'Australia$'n
 ```
 
 Other WHERE select examples:
@@ -111,6 +124,8 @@ proc print data=...;
 run;
 ```
 
+---
+
 # Sorting
 
 - By default rearranges in place, affecting input data set (dangerous with a WHERE statement, can lose data)
@@ -131,7 +146,7 @@ run;
  by descending Last descending First;
 ```
 
-# Advanced Sorting
+## Advanced Sorting
 
 - Can sort by multiple variables and output multiple tables separated by group
 
@@ -145,7 +160,7 @@ proc print data=work.sales noobs;
 run;
 ```
 
-# Examples
+## Sorting Examples
 
 ```
 /*proc contents data=orion.employee_payroll;*/
@@ -171,6 +186,8 @@ run;
 
 ```
 
+---
+
 # Titles and Footnotes
 
 - Default: The SAS System
@@ -192,6 +209,8 @@ footnote;  * don't want to accidentally put on another report
 ```
 
 - A new title statement will replace the existing title and clear ALL with a higher number
+
+---
 
 # Labels
 
@@ -225,7 +244,7 @@ run;
 </pre>
 
 
-# SPLIT=
+## SPLIT=
 
 - Split words in column headers using labels and a specified character.
 
@@ -236,6 +255,8 @@ proc print data=... <b>split='*'</b>;
           Salary = 'Annual<b>*</b>Salary';
 run;
 </pre>
+
+---
 
 # Formatting Data
 
@@ -280,7 +301,7 @@ proc print data=work.subset1 <b>label</b>;
 run;
 </pre>
 
-## Examples
+## Format Examples
 
 <pre>
 title 'Contents of Orion.Sales';
@@ -303,7 +324,7 @@ run;
 title;
 </pre>
 
-# User-Defined Formats
+## User-Defined Formats
 
 <pre>
 <b>PROC FORMAT</b>;
@@ -334,7 +355,7 @@ proc format;
                   50000-99999='Tier 2';
 run;
 
-/* The < symbol EXCLUDES the endpoint from a range, allowing continuous values */
+/* The < symbol EXCLUDES the endpoint from a range, allowing continuous values * /
 proc format;
     value tiers     low -< 20000    = 'Tier 0'  *  keyword representing lowest possible value
                     20000 -< 50000  = 'Tier 1'  * don't include 50,000
@@ -358,6 +379,7 @@ proc print data=...;
 run;
 </pre>
 
+---
 
 # Reading SAS Data Sets
 
@@ -416,6 +438,7 @@ data work.auemps;
 run;    
 </pre>
 
+---
 
 # Reading Data
 
@@ -426,13 +449,83 @@ run;
  Add access as a library.
  
  <pre>
- <b>LIBNAME</b> <em>libref <engine> "workbook-name" \<options\>;</em>
+ <b>LIBNAME</b> <em>libref <engine> "workbook-name" options;</em>
  </pre>
  
  ```
+ /* Bit counts of SAS and MS Office are the SAME */
  libname orionx excel "&path\sales.xls";
+ 
+ /* Bit counts of SAS and MS Office are DIFFERENT */
+ libname orionx pcfiles path="&path\sales.xls";
  ```
 
+If SAS has a libref assigned to an Excel sheet, the sheet cannot be opened in Excel as RW, only RO.
 
+```
+/* Clear out a libref */
+libname orionx clear;
+```
 
+---
 
+# Types of Data
+
+## Standard Data
+
+### Numeric
+
+- Contains: +, -, decimal points, or E notation
+
+```
+58
+67.23
+-23
+1.2E-2
+```
+
+## Nonstandard Data
+
+### Numeric
+
+```
+(23)
+$67.23
+5,823
+01/12/2010
+12May2009
+```
+
+---
+
+# Reading Raw Data Files
+
+## List Input
+
+- Default delimiter is a space (blank) ' '
+- Fields read left to right
+- Standard and nonstandard can be read
+- Default length for all variables is 8 bytes
+
+```
+data work.subset;
+    infile "&path\sales.csv" dlm=',';  /* double quotes used for referencing macro variable */
+    input Employee_ID First_Name $;    /* '$' indicates a character variable */
+run;          
+```
+
+## Length
+
+Defines the type and length of a variable when reading in data from a file.
+
+<pre>
+<b>LENGTH</b> <em>variable(s) [$] length;</em>
+</pre>
+
+```
+data work.subset;
+    length First_Name $ 12 Last_Name $ 18;  /* must be BEFORE input statement */
+    infile ...;
+    input First_Name $ Last_Name $;  /* actually don't need '$'s, length identifies the characters */
+run;
+```
