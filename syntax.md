@@ -207,6 +207,24 @@ proc print data=orion.sales <b>label</b>;
 run;
 </pre>
 
+## Permanent Labels
+
+ - Define the labels in the DATA step to be stored permanently in the descriptor portion of the data set.
+ - Can be overridden with the LABEL option in a PROC step.
+
+<pre>
+data work.subset1;
+    set ...;
+    label Job_Title = 'Sales Title'
+          Hire_Date = 'Date Hired';
+run;          
+
+/* Display within PRINT using the label option * /
+proc print data=work.subset1 <b>label</b>;
+run;
+</pre>
+
+
 # SPLIT=
 
 - Split words in column headers using labels and a specified character.
@@ -233,7 +251,7 @@ proc print data=...;
 run;    
 </pre>
 
-# Formats
+## Formats
 
 <pre>
 $w. - standard character
@@ -243,6 +261,23 @@ DOLLARw.d
 COMMAXw.d
 EUROXw.d
 MMDDYY10.
+</pre>
+
+## Permanent Formats
+
+ - Define formats in the DATA step to be stored permanently in the descriptor portion of the data set.
+ - Can be overridden with the FORMAT option in a PROC step.
+
+<pre>
+data work.subset1;
+    set ...;
+    Bonus = Salary * 0.10;
+    format Salary commax8. Bonux commax8.2;
+run;          
+
+/* Display within PRINT using the label option * /
+proc print data=work.subset1 <b>label</b>;
+run;
 </pre>
 
 ## Examples
@@ -328,7 +363,8 @@ run;
 
 ## Subsets
 
-Create new or update existing variables with an **assignment** statement.
+- Create new or update existing variables with an **assignment** statement.
+- WHERE statement must go below the **set** statement, the variables don't exist until data is brought in.
 
 ```
 data work.subset1;  /* OUTPUT */
@@ -339,3 +375,43 @@ data work.subset1;  /* OUTPUT */
     Bonus = Salary * 0.10;  /* assignment */
 run;          
 ```
+
+## Customizing
+
+DROP <b>excludes</b> variables from output data set, others will be kept.
+
+<pre>
+data work.subset1;
+    set orion.sales;
+    <b>drop Employee_ID Gender Country;</b>
+run;    
+</pre>
+
+KEEP <b>includes</b> variables in the output data set, others will be dropped.
+
+<pre>
+data work.subset1;
+    set orion.sales;
+    <b>keep First_Name Employee_ID Gender Country;</b>
+run;    
+</pre>
+
+IF tests a condition, to determine where the observation should be processed. Note, this test CANNOT go in a WHERE statement.
+
+<pre>
+/* Subsetting IF statement */
+data work.auemps;
+    set orion.sales;
+    where Country = 'AU';
+    Bonus = Salary * 0.10;
+    <b>if Bonus >= 3000;</b>
+run;  
+
+/* More efficient, less observations processed * /
+data work.auemps;
+    set orion.sales;
+    where Country = 'AU' and
+        salary * 0.10 >= 3000;
+    Bonus = Salary * 0.10;
+run;    
+</pre>
