@@ -278,10 +278,47 @@ title;
 RUN;
 </pre>
 
+- Must begin with '$' for character formats
+- Letter or underscore required at beginning and after '$'
+- Range can be single value, range of values, or a list
+- Labels must be enclosed in quotations
+
+
+Create a custom format. A new folder gets created in the WORK library named Formats which contains the custom created formats.
+
 <pre>
 proc format;
 	value <b>$ctrymt</b> 'AU'='Australia'
                          'US'='United States'
                          other='Miscoded';
+run;
+
+/* Ranges */
+proc format;
+    value tiers       0-49999='Tier 1'
+                  50000-99999='Tier 2';
+run;
+
+/* The < symbol EXCLUDES the endpoint from a range, allowing continuous values */
+proc format;
+    value tiers     low -< 20000    = 'Tier 0'  *  keyword representing lowest possible value
+                    20000 -< 50000  = 'Tier 1'  * don't include 50,000
+                    50000 -< 100000 = 'Tier 2'
+                    100000 - high   = 'Tier 3';  * keyword representing highest possible value
+run;
+
+proc format;
+    value mnthfmt   1,2,3 = 'Qty1'
+                        . = 'missing'  * replacing missing numerics
+                    other = 'unknown';
+run;
+</pre>
+
+Then apply it.
+
+<pre>
+proc print data=...;
+	var ...;
+    <b>format Country $ctryfmt.;</b>  * Note the required period 
 run;
 </pre>
