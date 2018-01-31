@@ -500,7 +500,7 @@ $67.23
 
 # Reading Raw Data Files
 
-## List Input
+## Standard (List) Input
 
 - Default delimiter is a space (blank) ' '
 - Fields read left to right
@@ -527,5 +527,65 @@ data work.subset;
     length First_Name $ 12 Last_Name $ 18;  /* must be BEFORE input statement */
     infile ...;
     input First_Name $ Last_Name $;  /* actually don't need '$'s, length identifies the characters */
+run;
+```
+
+---
+
+# Reading Nonstandard Delimited Data
+
+## Informats
+
+- required to read nonstandard numeric data
+- describe the data value and tells SAS how to convert to internal representation
+
+```
+input Employee_ID First_Name :$12.;  /* ':' denotes an informat */
+```
+
+```
+COMMA.  $12,345 --> 12345
+DOLLAR 
+COMMAX.
+DOLLARX
+EUROX.
+$CHAR. - retains leading spaces (removed by default without informat)
+$UPCASE.
+MMDDYY. 	010160	 -->	 0
+DDMMYY.
+DATE.		31DEC59	 --> 	-1
+```
+
+```
+input Birth_Date :date. Hire_Date :mmddyy.;
+```
+
+## Additional SAS Statements
+
+- Can be used AFTER input statement
+
+```
+/* if, keep, label, and format OK to use since they are AFTER input statement */
+data work.sales;
+    infile ...;
+    input ...;
+    if Country='AU';
+    keep ...;
+    label ...;
+    format ...;
+run;
+```
+
+### Datalines
+
+**DATALINES** statement supplies data within a program.
+
+```
+data work.newemps;
+    input ...;
+datalines;  /* MUST be last in data step */
+Steven Worton Auditor $40,450
+Merle Hieds Trainee $24,025
+;
 run;
 ```
