@@ -14,10 +14,10 @@
 ## Printing 
 
 <pre>
-/\* Select specific vars when printing and sums specific \*/ 
+/* Select specific vars when printing and sums specific */ 
 proc print data=orion.sales; 
     var Last_Name First_Name Salary; 
-    <b>sum Salary;  \* order usually not important </b>
+    <b>sum Salary;  * order usually not important </b>
 run; 
 </pre>
 
