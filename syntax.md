@@ -614,3 +614,28 @@ data ...;
     ...;
 run;
 ```
+
+---
+
+# Reading Formatted Input
+
+## Column Format
+
+Pointer controls:
+
+- @n - moves pointer to column 'n'.
+- +n - moves pointer n positions.
+
+<pre>
+<b>INPUT</b> <em>pointer-control variable informat . . .;</em>
+</pre>
+
+```
+/* example informat */
+data work.discounts;
+    infile ...;
+    input @1 Cust_type 4.
+          @5 Offer_dt mmddyy8.
+          @14 Item_gp $8.
+run;          
+```
