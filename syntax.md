@@ -685,3 +685,35 @@ Trailing **@** holds raw data record in input buffer until:
               @20 Amount commax7.;  /* or this one */
 run;              
  ```
+
+# Manipulating Data with Functions
+
+Date Functions: (taking *SAS-date* as input)
+ - YEAR
+ - QTR
+ - MONTH
+ - DAY
+ - WEEKDAY
+
+Other Date Functions:
+ - TODAY()
+ - DATE()
+ - MDY(month,day,year) returns a SAS-date
+ 
+ ## Using SAS Functions
+ 
+ ```
+ /* variables can be used in functions */
+ BonusMonth = month(Hire_Date)
+ AnnivBonus = mdy(BonusMonth, 15, 2008);
+ 
+ /* can be part of any SAS expression */
+ if month(Hire_Date) = 12;
+ 
+ /* functional composition */
+ AnnivBonus = mdy(month(Hire_Date), 15, 2012);
+ ```
+ 
+
+
+
