@@ -272,6 +272,21 @@ EUROXw.d
 MMDDYY10.
 </pre>
 
+```
+/* yymmddx */
+format ... yymmddd10.;
+
+/*
+yymmddx, replace x with:
+Default = dash
+b = blanks
+c = colons
+d = hyphens/dashes
+p = periods
+s = slashes
+*/
+```
+
 ## Permanent Formats
 
  - Define formats in the DATA step to be stored permanently in the descriptor portion of the data set.
@@ -611,3 +626,62 @@ data work.discounts;
           @14 Item_gp $8.
 run;          
 ```
+
+## PAD
+
+- Goes on **INFILE** statement
+- Pads the input buffer with blanks
+- Useful if you have a variable-length field at the end of each record
+
+## LRECL - Logical record length
+
+- Goes in **INFILE** statement
+- Set to a number so SAS doesn't truncate a record if records are very long.
+
+```
+INFILE "&PATH\FILENAME.DAT" PAD LRECL=2000;
+```
+
+# Multiple INPUT Statements
+
+What if we have multiple records (lines) in a file and want to put it in ONE observation?
+
+```
+data contacts;
+    infile "&path\address.dat";
+    input FullName $30.;
+    input;
+    input Address2 $25.;
+    input Phone $8.;
+run;
+
+/* can be done with one INPUT */
+/* '/' tells SAS to load next record */
+data contacts;
+    infile "&path\address.dat";
+    input FullName $30. /  /
+          Address2 $25. /
+          Phone$8.;
+run;          
+```
+
+## Mixed Record Types 
+
+**IMPORTANT** for CASE STUDY.
+
+Trailing **@** holds raw data record in input buffer until:
+ - executes an INPUT without @
+ - begins next DATA step iteration
+ 
+ ```
+ data salesQ1;
+    infile ...;
+    input @6 Location $3. @;  /* holds input buffer */
+    if Location='USA' then
+        input @10 SaleDate mmddyy10.
+              @20 Amount 7.;  /* until the end of this input */
+    else if Location='EUR' then
+        input @10 SaleDate date9.
+              @20 Amount commax7.;  /* or this one */
+run;              
+ ```
