@@ -801,13 +801,15 @@ run;
 
 ## Case Testing using SELECT ... WHEN
 
+- Can be used in a DATA step
+
 ```
 /* Using statements */
 select (a);
     when (1) x=x*10;
     when (2);
     when (3,4,5) x=x*100;
-    otherwise;
+    otherwise;  /* MUST BE PRESENT even if not using it */
 end;    
 
 /* Using DO groups */
@@ -820,6 +822,17 @@ select (payclass);
       end;                                     /* end of do */
     otherwise put 'PROBLEM OBSERVATION';
 end;                                           /* end of select */    
+
+/* Can test multiple values, not limited to testing ONLY country */
+/* More flexible, not limited to testing only equality, can do <, >, etc. */
+data usa australia other;
+    set orion.employees;
+    select;
+        when (country='US') output usa;
+        when (country='AU') output australia;
+        otherwise output other;
+    end;
+run;
 ```
 
 
@@ -906,4 +919,49 @@ run;
 ```
 
 Use a subsetting IF when the subsetting variable is NOT in ALL data sets in MERGE statement.
+
+# Input and Output
+
+- The **output** statement can be used to explicitly output the contents of PDV to data set.
+- There is no more implicit output at the end of a data step iteration.
+
+```
+/* Writes PDV to the data set eing created */
+data forecast;
+    set orion.growth;
+    Year=1;
+    Total_Employees=Total_Employees*(1+Increase);
+    output;
+    Year=2;
+    Total_Employees=Total_Employees*(1+Increase);
+    output;  /* Need explicit output */
+run;
+```
+
+## Multiple Output Data Sets
+
+- Specify multiple data sets in the data statement for multiple potential outputs.
+- Can only print ONE data set at a time.
+
+```
+data usa australia other;
+    set orion.employee_addresses;
+    if Country='AU' then output australia;
+    else if Country='US' then output usa;
+    else output other;
+run;
+
+/* Alternate */
+data usa australia other;
+    set orion.employee_addresses;
+    select (Country);
+        when ('US') output usa;
+        when ('AU') output australia;
+        otherwise output other;
+    end;
+run;
+```
+
+
+
 
