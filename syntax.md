@@ -963,5 +963,58 @@ run;
 ```
 
 
+## Data Set Options
 
+### DROP=, KEEP=
+
+```
+/* Drops variables from specific output data sets */
+data new-data-set(drop=variable(s));
+    set old-data-set;
+    ...;
+run;
+
+/* Can also use KEEP */
+data usa(keep=Employee_Name City State)
+     australia(drop=Street_ID State)
+     other;
+    set orion.employees;
+    ...;
+run;    
+
+/* Can remove data on the input data set */
+data new-data-set;
+    set old-data-set(drop=variable(s));
+    ...
+run;
+```
+
+### FIRSTOBS=, OBS
+
+Can only be used with **input** data sets. Cannot be used with output data sets.
+
+```
+/* Stop after processing observation 100 */
+data australia;
+    set orion.employee_address (obs=100);
+    ...;
+run;
+
+/* start at a specific observation */
+data australia;
+    set orion.employee_address (firstobs=50 obs=100);
+    ...;
+run;    
+
+/* INFILEs also work */
+data employees;
+    infile "..." firstobs=11 obs=15;  /* parens NOT used */
+    input ...;
+run;    
+
+/* Can be used in PROC steps */
+proc print data=origin.employee_addresses (firstobs=10 obs=15);
+    var ...;
+run;    
+```
 
