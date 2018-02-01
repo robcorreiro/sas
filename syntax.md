@@ -799,4 +799,25 @@ data work.bonus;
 run;
 ```
 
+## Case Testing using SELECT ... WHEN
 
+```
+/* Using statements */
+select (a);
+    when (1) x=x*10;
+    when (2);
+    when (3,4,5) x=x*100;
+    otherwise;
+end;    
+
+/* Using DO groups */
+select (payclass);
+    when ('monthly') amt=salary;
+    when ('hourly')
+      do;
+          amt=hrlywage*min(hrs,40);
+          if hrs>40 then put 'CHECK TIMECARD';
+      end;                                     /* end of do */
+    otherwise put 'PROBLEM OBSERVATION';
+end;                                           /* end of select */    
+```
