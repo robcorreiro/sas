@@ -10,8 +10,6 @@
 | Statement comments end at a semicolon   | 
 *-----------------------------------------*; 
 ```
- 
----
  
 # Printing 
 
@@ -22,8 +20,6 @@ proc print data=orion.sales; 
     <b>sum Salary;  * order usually not important </b>
 run; 
 </pre>
-
----
 
 # Selecting 
 
@@ -124,8 +120,6 @@ proc print data=...;
 run;
 ```
 
----
-
 # Sorting
 
 - By default rearranges in place, affecting input data set (dangerous with a WHERE statement, can lose data)
@@ -186,8 +180,6 @@ run;
 
 ```
 
----
-
 # Titles and Footnotes
 
 - Default: The SAS System
@@ -209,8 +201,6 @@ footnote;  * don't want to accidentally put on another report
 ```
 
 - A new title statement will replace the existing title and clear ALL with a higher number
-
----
 
 # Labels
 
@@ -246,7 +236,7 @@ run;
 
 ## SPLIT=
 
-- Split words in column headers using labels and a specified character.
+Split words in column headers using labels and a specified character.
 
 <pre>
 proc print data=... <b>split='*'</b>;
@@ -255,8 +245,6 @@ proc print data=... <b>split='*'</b>;
           Salary = 'Annual<b>*</b>Salary';
 run;
 </pre>
-
----
 
 # Formatting Data
 
@@ -379,8 +367,6 @@ proc print data=...;
 run;
 </pre>
 
----
-
 # Reading SAS Data Sets
 
 ## Subsets
@@ -438,15 +424,11 @@ data work.auemps;
 run;    
 </pre>
 
----
+# Reading Spreadsheet Data
 
-# Reading Data
-
-## Spreadsheets
-
-- Requires <b>SAS/ACCESS Interface to PC Files</b> license
+Requires <b>SAS/ACCESS Interface to PC Files</b> license.
  
- Add access as a library.
+Add access as a library.
  
  <pre>
  <b>LIBNAME</b> <em>libref <engine> "workbook-name" options;</em>
@@ -467,15 +449,11 @@ If SAS has a libref assigned to an Excel sheet, the sheet cannot be opened in Ex
 libname orionx clear;
 ```
 
----
-
 # Types of Data
 
-## Standard Data
+## Standard Numeric Data
 
-### Numeric
-
-- Contains: +, -, decimal points, or E notation
+Contains: +, -, decimal points, or E notation
 
 ```
 58
@@ -484,9 +462,7 @@ libname orionx clear;
 1.2E-2
 ```
 
-## Nonstandard Data
-
-### Numeric
+## Nonstandard Numeric Data
 
 ```
 (23)
@@ -496,9 +472,7 @@ $67.23
 12May2009
 ```
 
----
-
-# Reading Raw Data Files
+# Reading Raw (Flat) Data Files
 
 ## Standard (List) Input
 
@@ -562,7 +536,7 @@ input Birth_Date :date. Hire_Date :mmddyy.;
 
 ## Additional SAS Statements
 
-- Can be used AFTER input statement
+Can be used AFTER input statement.
 
 ```
 /* if, keep, label, and format OK to use since they are AFTER input statement */
@@ -576,7 +550,7 @@ data work.sales;
 run;
 ```
 
-### Datalines
+## Datalines
 
 **DATALINES** statement supplies data within a program.
 
@@ -603,7 +577,7 @@ data ...;
 run;
 ```
 
-### MISSOVER
+## MISSOVER
 
 - Prevents SAS from loading new record when end of record is reached.
 - Handles case when you're missing a variable at the end of a record.
@@ -614,8 +588,6 @@ data ...;
     ...;
 run;
 ```
-
----
 
 # Reading Formatted Input
 
