@@ -1018,3 +1018,78 @@ proc print data=origin.employee_addresses (firstobs=10 obs=15);
 run;    
 ```
 
+# Summarizing Data
+
+## Accumulating Variables
+
+```
+/* Retain the value of a variable AND set and initial value. */
+data mnthtot;
+    set orion.aprsales;
+    retain Mth2Dte 0;
+    Mth2Dte = sum(Mth2Dte, SaleAmt);  /* SUM ignores missing values */
+run;    
+```
+
+## Sum Statement
+
+In the following code block, **Mth2Dte** will:
+
+- be initialized to 0
+- automatically retained
+- increased by **SaleAmt** for each observation
+- ignores missing values of SaleAmt
+
+```
+data mthtot2;
+    set work.aprsales2;
+    Mth2Dte + SaleAmt;  /* variable + expression */
+run;    
+```
+
+## Totals for a Group of Data
+
+Subtotals for groups of data.
+
+```
+/* Need to sort first */
+proc sort data=... out=...;
+    by Dept;  /* copied down below into DATA step */
+run;
+
+/* incomplete version */
+data deptsals(keep=Dept DeptSal);
+    set salsort;
+    by Dept;  /* creates two temp vars for each var listed, First.Dept and Last.Dept */
+    ...  /* Can also be used to create a unique list of keys, e.g. output all First.variable = 1 */
+run;    
+
+/* complete version */
+data deptsals(keep=Dept DeptSal);
+    set SalSort;
+    by Dept;  /* sets up temp vars */
+    if First.Dept then DeptSal=0;  /* reset for each dept */
+    DeptSal + Salary;  /* accumulation variable */
+    if Last.Dept;  /* output only after processing last row */
+run;    
+```
+
+What if we want to summarize data for a subset of a group? (e.g. Project within a Department)
+
+```
+/* Remember, need to sort first. Now with 2 vars */
+proc sort data=orion.projsals out=projsort;
+    by Proj Dept;
+run;    
+
+data pdsals; 
+    set projsort;
+    by Proj Dept;  /* Higher level = First.Proj, Last.Proj, Lower Level = First.Dept, Last.Dept */
+    if First.Dept then do;  /* only need to care about the inner-most level */
+        DeptSal = 0;
+        NumEmps = 0;
+    end;
+    DeptSal + Salary;
+    NumEmps + 1;
+    if Last.Dept;  /* higher level changes implicitly changes the lower level .
+```
