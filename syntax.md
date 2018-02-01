@@ -882,6 +882,28 @@ run;
 - Results are the same between the two types of merges
 - Though the order of variables is different
 
+## Merging with Non-Matches
+
+**IN=** data set option creates a variable which indicates whether the data set contributed to building the current row.
+
+```
+MERGE SAS-data-set (IN=variable) ...
+
+0 - Indicates the data set DID NOT contribute
+1 - Indicates the data set DID contribute
 
 
-# Merging with Non-Matches
+data empsauc;
+    merge empsau(in=Emps)
+          phonec(in=Cell);
+    by EmpID;
+    if Emps=1 and Cell=0;  /* Employees who DO NOT have phones */
+    if Emps and not Cell;  /* Alternate syntax */
+    if not Emps and Cell;  /* Invalid employee ID with phone */
+    if not Emps or not Cell;  /* For non-matches. NOTE THE OR, instead of and. */
+    ...
+run;    
+```
+
+Use a subsetting IF when the subsetting variable is NOT in ALL data sets in MERGE statement.
+
