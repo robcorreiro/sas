@@ -727,6 +727,76 @@ Other Date Functions:
  AnnivBonus = mdy(month(Hire_Date), 15, 2012);
  ```
  
+## Function Example
 
+```
+data work.birthday;
+	set orion.customer;
+	Bday2012 = mdy(month(birth_date), day(birth_date), 2012);
+	BdayDOW2012 = weekday(Bday2012);
+	Age2012 = (bday2012 - birth_date) / 365.25;
+	keep customer_name birth_date bday2012 bdaydow2012 age2012;
+	format bday2012 date9. age2012 3.;
+run;
+
+proc print data=work.birthday;
+run;
+```
+
+# Conditionals
+
+```
+/* IF */
+data work.comp;
+    set orion.sales;
+    if Job_Title='Sales Rep' then
+        Bonus=1000;
+    ....
+run;
+
+/* ELSE-IF */
+data work.comp;
+    set orion.sales;
+    if Job_Title='Sales Rep. IV' then
+        Bonus=1000;
+    else if Job_Title='Sales Manager' then
+        Bonus=1500;
+run;     
+
+/* ELSE */
+data work.com;
+    set orion.sales;
+    if ... then ....;  /* can exist on same line */
+    else Bonus=500;
+run;    
+
+/* OR */
+data work.comp;
+    set ...;
+    if ... or ... then ...;
+run;    
+```
+
+## Executing Multiple Statements using DO ... END
+
+By default, only a single statement can be used after a conditional.
+
+<pre>
+<b>IF</b> <em>expression</em> <b>THEN</b> <em>statement;</em>
+</pre>
+
+```
+/* DO ... END */
+data work.bonus;
+    set orion.sales;
+    if Country='US' then do;  /* can be used with a single statement for consistency */
+        Bonus=500;
+        Freq='Once a Year';
+    end;
+    else if ... then ... do;
+        ...;
+    end;
+run;
+```
 
 
