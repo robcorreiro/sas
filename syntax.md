@@ -821,3 +821,42 @@ select (payclass);
     otherwise put 'PROBLEM OBSERVATION';
 end;                                           /* end of select */    
 ```
+
+
+# Concatenating Data Sets
+
+- Any # of data sets can be included
+- PDV reinitialized before processing next data set
+
+```
+data ...;
+    set SAS-data-set1 SAS-data-set2 ...;
+run;
+```
+
+## RENAME=
+
+ - Changes the name of a variable.
+ - Affects the PDV
+ - Input data set not changed.
+
+```
+data ...;
+    set SAS-data-set(RENAME=(old-name-1=new-name-1
+                             old-name-2=new-name-2
+                             ...
+                             old-name-n=new-name-2));
+run;
+
+data empsall2;
+    set empscn empsjp(rename=(Region=Country));
+run;
+```
+
+# Merging Data Sets (One-to-One)
+
+
+# Merging Data Sets (One-to-Many)
+
+
+# Marging with Non-Matches
