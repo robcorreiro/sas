@@ -853,10 +853,35 @@ data empsall2;
 run;
 ```
 
-# Merging Data Sets (One-to-One)
+# Merging Data Sets
+
+## One-to-One
+
+MERGE statement joins observations from two or more SAS data sets into single observations.
+
+```
+/* Must sort data sets BEFORE match-merge */
+proc sort data=input-SAS-data-set <out=output-data-set>;
+	by <descending> by-variable(s);
+run;	
+
+data ...;
+    merge sas-data-set-1 sas-data-set2;
+    by by-variable(s);  /* indicates a match-merge and lists variable(s) to match
+run;
+
+e.g.
+data empsauh;
+    merge empsau phoneh;
+    by EmpID;  /* must be common to all data sets */
+run;
+```
+
+## One-to-Many / Many-to-One
+
+- Results are the same between the two types of merges
+- Though the order of variables is different
 
 
-# Merging Data Sets (One-to-Many)
 
-
-# Marging with Non-Matches
+# Merging with Non-Matches
