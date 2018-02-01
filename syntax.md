@@ -260,9 +260,9 @@ proc print data=...;
 run;    
 </pre>
 
-## Formats
+## Numeric Formats
 
-<pre>
+```
 $w. - standard character
 w.d - standard numeric
 COMMAw.d
@@ -270,13 +270,27 @@ DOLLARw.d
 COMMAXw.d
 EUROXw.d
 MMDDYY10.
-</pre>
+```
+
+## Date Formats
 
 ```
+MMDDYY10.  /* 01/01/1960 */
+MMDDYY8.  /* 01/01/60 */
+MMDDYY6.  /* 010160 */
+DDMMYY10.  /* 31/12/1960 */
+DDMMYY8.
+DDMMYY6.
+DATE7.  /* 31DEC59 */
+DATE9.  /* 31DEC1959 */
+WORDDATE.  /* January 1, 1960 */
+WEEKDATE.  /* Friday, January 1, 1960 */
+MONYY7.  /* JAN1960 */
+YEAR4.  /* 1960 */
+
 /* yymmddx */
 format ... yymmddd10.;
 
-/*
 yymmddx, replace x with:
 Default = dash
 b = blanks
@@ -284,7 +298,6 @@ c = colons
 d = hyphens/dashes
 p = periods
 s = slashes
-*/
 ```
 
 ## Permanent Formats
