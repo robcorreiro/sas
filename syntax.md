@@ -1076,6 +1076,8 @@ run;
 
 What if we want to summarize data for a subset of a group? (e.g. Project within a Department)
 
+**IMPORTANT FOR EXAM **
+
 ```
 /* Remember, need to sort first. Now with 2 vars */
 proc sort data=orion.projsals out=projsort;
@@ -1092,4 +1094,157 @@ data pdsals;
     DeptSal + Salary;
     NumEmps + 1;
     if Last.Dept;  /* higher level changes implicitly changes the lower level .
+```
+
+# Data Transformations
+
+## Variable Lists
+
+```
+/* Alternatives to entering all var names */
+data contrib;
+    set ...;
+    Total=sum(of Qtr1-Qtr4);  /* keyword OF precedes variable list */
+    Total=sum(of Tot:);  /* name prefix list, e.g. sum all vars which start with Tot */
+    Total=sum(of _Numeric_);  /* sums all numeric vars */
+run;
+```
+
+**SUBSTR()**
+
+<pre>
+<em>NewVar</em>=<b>SUBSTR</b>(<em>string,start[,length]</em>);
+</pre>
+
+```
+Org_Code=substr(Acct_code, 4);  /* AQI2 --> 2 */
+```
+
+**LENGTH()**
+
+<pre>
+<em>NewVar</em>=<b>LENGTH</b>(<em>argument</em>);
+</pre>
+
+```
+Code='ABCD   ';
+Last_NonBlank=length(Code);  /* 4 */
+```
+
+**PROPCASE()**
+
+<pre>
+<em>NewVar</em>=<b>PROPCASE</b>(<em>argument [,delimiter(s)]</em>);  * Default delimiters: Blank / - ( . tab;
+</pre>
+
+```
+Name='SURF&LINK SPORTS';
+foo=propcase(Name);  /* Surf&link Sports */
+bar=propcase(Name, ' &');  /*  Surf&Link Sports */ /* space AND & used as delimiters */
+```
+
+```
+data charities;  /* 2 represents charities for example */
+    length ID $ 5;
+    set ...;
+    if substr(Acct_Code, length(Acct_Code), 1) = '2';  /* Acct_Code = 'AQI2' */
+    ID=substr(Acct_Code, 1, length(Acct_Code)-1);  /* ID = 'AQI' */
+    Name=propcase(Name);
+run;
+```
+
+**SCAN()**
+
+- Returns the nth word of a character value
+- Missing returned if fewer than n words in string
+- Use negative n value to scan from end of string 
+- 
+
+<pre>
+<em>NewVar</em>=<b>SCAN</b>(<em>string,n[,charlist]</em>);
+</pre>
+
+```
+Name='Farr,Sue';
+FMName=scan(Name, 2, ',');  /* FMName = Sue */
+```
+
+**CATX()**
+
+Other CAT functions:
+
+ - CAT doesn't remove leading or trailing blanks
+ - CATS removes leading and trailing blanks
+ - CATT removes trailing blanks
+
+<pre>
+<em>NewVar</em>=<b>CATX</b>(<em>sep, string1, ... , stringn</em>);
+</pre>
+
+```
+FMName='Sue';
+LName='Farr';
+FullName=catx(' ', FMName, LName);  /* Sue Farr */
+```
+
+**Concatenation Operator**
+
+<pre>
+<em>NewVar</em>=<em>string1</em> <b>!!</b> <em>string2</em>;
+<em>NewVar</em>=<em>string1</em> <b>||</b> <em>string2</em>;
+</pre>
+
+```
+area = '919'; Number = '531-0000';
+Phone = '(' !! area !! ') ' !! Number;  /* (919) 531-0000 */
+Phone = '(' || area || ') ' || Number;  /* Alternate with vertical bars */
+```
+
+**FIND(string,substring<,modifiers,startpos)**
+
+Returns column number where substring is found within string, or 0 if not found.
+
+```
+data find;
+    Text='AUSTRALIA, DENMARK, US';
+    Pos1=find(Text,'US');  /* 2  */
+    Pos2=find(Text,' US');  /* 20 */
+    Pos3=find(Text,'us'):  /* 0 */
+    Pos4=find(Text,'us','I');  /* 2 */  /* optional 'I' modifier ignores case, 'T' would ignore trailing blanks */
+    Pos5=find(Text,'us','I',10);  /* 21 */ /* optional start modifier */
+```
+
+**TRANWRD(source,target,replacement)**
+
+Replaces all occurrences of one word with another.
+
+- Does NOT remove trailing blanks from *target* or *replacement*.
+- Default length of NewVar is given length 200
+- Does nothing if target not found
+
+**COMPRESS(source<,chars>)**
+
+Removes the *chars* from the *source*.
+
+```
+ID=20 01-005 024';
+foo=compress(ID);  /* '2001-005024' */
+bar=compress(ID,'-');  /* '20 01005 024' */
+foobar=compress(ID,' -');  /* '2001005024' */
+```
+
+Other Functions which remove blanks:
+
+ - TRIM(string) removes trailing blanks
+ - STRIP(string) removes leading AND trailing blanks
+ - COMPBL(string) replaces 2+ consecutive blanks with a single blank
+
+```
+data correct;
+    set ...;
+    if find(Product, 'Mittens', 'I') > 0 then do;  
+        substr(Product_ID, 9, 1) = '5';
+        Product = Tranwrd(Product, 'Luci ', 'Lucky ');
+    end;
+run;
 ```
