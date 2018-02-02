@@ -1522,3 +1522,95 @@ data compare(drop=i);
     end;
 run;
 ```
+
+# Summary Reports
+
+## Freq Proc
+
+- produces a one-way freq table for each var named in TABLES statement
+
+<pre>
+<b>PROC FREQ DATA=</b><em>SAS-data-set;</em>
+    [<b>TABLES</b> <em>variable(s) [/options]</em>];
+<b>RUN</b>;
+</pre>
+
+```
+proc freq data=orion.sales;
+    tables Gender;
+    where Country='AU';
+run;    
+
+/* multiple tables statements can be 
+used to produce additional tables */
+proc freq data=orion.sales;
+    tables Gender Country;
+run;    
+```
+
+**BY** statements can be used to request separate analyses.
+
+```
+/* Make sure to sort FIRST */
+proc sort data=... out=sorted;
+    by X;
+run;
+
+proc freq data=sorted;
+    tables Gender;
+    by Country;
+run;    
+
+/* Two-way freq table */
+proc freq data=...;
+    tables X*Y;
+run;    
+
+/* Useful for checking output sanity */
+proc freq data=orion.nonsales2 nlevels;
+    tables Gender Country / nocum nopercent;
+run;    
+
+/* Checking for uniqueness */
+proc freq data=... order=freq;
+    tables Employee_ID / nocum noprecent;
+run;    
+
+/* Can use formats for outputs of freq */
+proc freq data=orion.sales;
+    tables Hire_Date / nocum format=12;  /* format cells to width 12 to avoid wrapping */
+    format Hire_Date year4.;
+run;    
+```
+
+## PROC MEANS
+
+- Produces summary reports with descriptive stats
+- Default stats: N, Mean, Std Dev, Min, Max
+
+```
+proc means data=...;
+    var X; /* limits stats output to a single var */
+    class Y Z;  /* identified vars who vals represent subgroups for the analysis */
+run;    
+
+proc means orion.sales;
+    var Salary;
+    class Gender Country;  /* don't need to sort before, done automatically */
+run;    
+
+proc means data=orion.sales nmiss min max sum;  /* request specific stats */
+    ...
+run;
+```
+
+## PROC UNIVARIATE
+
+Displays extreme observations, missing vals, and other stats.
+
+```
+proc univariate data=... [nextrobs=X];  /* optionally limit # of extreme vals output */
+    var ...;
+    id foo;  /* displays val of identifying var */
+run;    
+```
