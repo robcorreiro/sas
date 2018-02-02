@@ -1384,3 +1384,72 @@ data hrdata(drop=CharGross);
     GrossPay=input(CharGross, comma6.);
 run;    
 ```
+
+
+# Iteration
+
+## DO LOOPs
+
+<pre>
+<b>DO</b> <em>index=start</em> <b>TO</b> <em>stop</em> [<b>BY</b> <em>increment</em>];
+<b>END;</b>
+</pre>
+
+```
+data invest;
+    do Year=2008 to 2010;
+        Capital+5000;
+        Capital+(Capital*0.045);
+    end;
+run;  /* will output Year 2011, because Year gets incremented after last iteration of loop */
+```
+
+## DO UNTIL Loops
+
+- Statements are executed AT LEAST once. 
+- Think of as a DO WHILE in other languages.
+- In a DO UNTIL, the condition is checked BEFORE index is incremented.
+
+```
+/* How many years will it take for the Capital to exceeed 1Mil? */
+data invest;
+    do until (Capital > 100000000);
+        Year+1;
+        Capital+5000;
+        Capital+(Capital * 0.045);
+    end;
+run;
+```
+
+## DO WHILE Loops
+
+- Statements in loop never execute if expression is initially false
+- Think of as a regular WHILE loop in other languages.
+- In a DO WHILE, the condition is checked AFTER index is incremented.
+
+```
+/* Putting an upper bound on the # of iterations */
+data invest;
+    do Year=1 to 30 while (Capital <=250000);
+        Capital+5000;
+        Capital+(Capital * 0.045);
+    end;
+run;
+```
+
+## Nested DO Loops
+
+```
+data invest(drop=Quarter);
+    set orion.banks;  /* FOR EACH ROW, will iterate over all observations in data set */
+    Capital=0;
+    do Year=1 to 5;
+        Capital+5000;
+        do Quarter=1 to 4;
+            Capital+(Capital * Rate/4));
+        end;
+    end;
+run;
+
+/* iteration within the 
+```
