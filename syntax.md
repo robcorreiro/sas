@@ -1098,7 +1098,7 @@ data pdsals;
 
 # Data Transformations
 
-## Variable Lists
+## Character Transformations
 
 ```
 /* Alternatives to entering all var names */
@@ -1247,4 +1247,140 @@ data correct;
         Product = Tranwrd(Product, 'Luci ', 'Lucky ');
     end;
 run;
+```
+
+## Numeric Value Transformation
+
+**ROUND(argument<,rounding-unit)**
+
+Rounded to the nearest multiple of rounding unit.
+
+```
+data truncate;
+    foo = round(12.12);  /* 12 */
+    bar = round(42.65, .1);  /* 42.7 */
+    foobar = round(-6.478);  /* -6 */
+    barfoo = round(96.47, 10);  /* 100 */
+    foo = roud(42.65, .5)  /* . */
+run;    
+```
+
+**CEIL(argument)**
+
+Returns smallest integer >= argument.
+
+```
+x = ceil(4.4); /* 5 */
+```
+
+**FLOOR(arguent)**
+
+Returns greatest integrer <= argument.
+
+```
+y=floor(3.6);  /* 3 */
+```
+
+**INT(argument)**
+
+Returns integer portion of argument.
+
+```
+foo = 6.478;
+bar = -6.478;
+
+ceil(foo);  /* 7 */
+floor(foo);  /* 6 */
+int(foo);  /* 6 */
+
+ceil(bar);  /* -6 */
+floor(bar);  /* -7 */
+int(bar);  /* -6 */
+```
+
+## Statistical Functions
+
+- SUM
+- MEAN
+- MIN
+- MAX
+- N
+- NMISS
+- CMISS
+
+## Converting Variable Types
+
+### Implicit Conversion
+
+#### Character to Numeric
+
+SAS can automatically convert when the character string (containing a numeric value) is in **standard** form.
+
+```
+data hrdata;
+    keep EmpID;
+    set orion.convert;
+    EmpID = ID + 11000;  /* ID in (36, 48, 52, ...) */
+run;    
+
+/* fails because GrossPay NOT in standard form */
+data hrdata;
+    keep GrossPay Bonus;
+    set orion.convert;
+    Bonus = GrossPay * 0.10;  /* GrossPay in ('52,000', '32,000', '49,000', ...) */
+```
+
+### Numeric to Character
+
+Automatically converts when:
+
+- assigning to a char var
+- concat operation
+- function which accepts char args
+
+
+### Explicit Conversion
+
+**INPUT(source,informat)** - character to numeric
+
+```
+data conversions;
+    CVar1='32000';
+    Cvar2='32.000';
+    Cvar3='03may2008';
+    Cvar4='030508';
+    NVar1=input(CVar1, 5.);
+    NVar2=input(CVar2, commax6.);
+    NVar3=input(CVar3, date9.);
+    NVar4=input(CVar4, ddmmyy6.);
+run;    
+```
+
+**PUT(source, format)** - numeric to character
+
+Returns val produced when *source* is written with *format*. Always returns char string.
+
+```
+data conversion;
+    NVar1=614;
+    NVar2=55000;
+    NVar3=366;
+    CVar1=put(NVar1, 3.);
+    CVar2=put(NVar2, dollar7.);
+    CVar3=put(NVar3, date9.);
+run;    
+```
+
+
+### Converting a Var to Another Type
+
+- Rename
+- Use **put()** or **input()** as needed to change 
+- Assign new val to old name
+
+```
+data hrdata(drop=CharGross);
+    set orion.convert(rename=(GrossPay=CharGross));
+    GrossPay=input(CharGross, comma6.);
+run;    
 ```
