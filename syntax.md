@@ -1453,3 +1453,72 @@ run;
 
 /* iteration within the 
 ```
+
+
+# Arrays
+
+- Must contain all **same type** of data (all numeric OR all char)
+- Exists only for current DATA step
+- NOT a variable (and NOT a data structure) only a temporary identification of a group of vars
+- **Elements** accessed via {}
+
+<pre>
+<b>ARRAY</b> <em>array-name {subscript} [$] [length] [array-elements]</em>;
+</pre>
+
+```
+array Contrib{4} Qtr1 Qtr2 Qtr3 Qtr4;
+array Contrib{4} Qtr:;  /* prefix notation for any variable starting with 'Qtr' */
+array Contrib{*} Qtr1 Qtr2 Qtr3 Qtr4;  /* infer subscript from # of elems defined */
+array Contrib{*} Qtr:;  /* dynamic */
+```
+
+## Usage with Loops
+
+```
+data charity;
+    set ...;
+    keep ...;
+    array Contrib{4} Qtr1-Qtr4;
+    do i=1 to 4;
+        Contrib{i} = Contrib{i} * 1.25;
+    end;
+run;
+
+
+/* DIM(array_name) returns the num of elems in array */
+data ...;
+    set ...;
+    array Contrib{*} qtr:;
+    do i=1 to dim(Contrib);  /* dynamic # of elems */
+        Contrib{i} = Contrib{i} * 1.25;
+    end;
+run;
+```
+
+## Creating Vars with Arrays
+
+```
+/* Can create new data vars, not only reference existing vars */
+array Pct{4} Pct1-Pct4;
+
+/* shorthand syntax */
+array Pct{4};
+
+/* Creating new char vars */
+array Month{6} $ 10;
+
+/* Initial Value List goes at end of array def */
+array Target{5} (50,100,125,150,200);
+
+/* _TEMPORARY_ indicates the element are not needed in output, same as using a drop for each array elem */
+data compare(drop=i);
+    set ...;
+    array Contrib{4} Qtr1-Qtr4;
+    array Diff{4};
+    array Goal{4} _temporary_ (10,20,20,15);
+    do i=1 to 4;
+        Diff{i} = sum(Contrib{i}, -Goal{i});
+    end;
+run;
+```
