@@ -1785,3 +1785,57 @@ options mprint;
     run;
 %mend calc;    
 ```
+
+## Macro Parameters
+
+```
+/* Positional Parameters */
+
+%macro calc(dsn, vars);
+    proc means data=&dsn;
+        vars &vars;
+    run;
+%mend calc;
+
+/* Keyword Args with Defaults */
+%macro count(opts=, start=01jan08, stop=31dec08);
+    ...;
+%mend count;
+
+/* Mixed */
+%macro count(opts, start=01jan08, stop=31dec08);
+    ...;
+%mend count;
+```
+
+## Macro Conditional Processing
+
+```
+/* setup */
+%macro daily;
+    ...;
+%mend daily;
+
+%macro weekly;
+    ...;
+%mend weekly;
+
+
+/* Using macros within macros conditionally */
+%macro reports;
+    %daily
+    %if &sysday=Friday %then %weekly;
+%mend reports;
+
+/* displays macro execution messages in log */
+options mlogic;  /* default: nomlogic */
+
+/* retrieves SAS code from external file, global */
+%macro reports;
+    %include "&path\daily.sas";  / * source2 option displays retrieved code */
+    %if &sysday=Friday %then %do;
+        %include "&path\weekly.sas";
+    %end;
+%mend reports;
+
+```
