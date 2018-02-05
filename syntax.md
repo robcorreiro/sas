@@ -1645,3 +1645,89 @@ ods rtf close; /* alternatively, ods _all_ close; */
 ods dest ... style=SOME_STYLE;
 
 ```
+
+
+# Macro
+
+- &name-token is a Macro variable reference
+- %name-token is a Macro statement, function, or call
+
+## Macro Variables
+
+- stored in memory in **global symbol table**
+- created when SAS is run, deleted at end of SAS job or session
+- stores numeric values as text
+- referenced with **&**, called symbolic references
+- not case sensitive
+- will work in **double quotes ""**, not single ''.
+
+```
+/* not working */
+footnote 'Created &systime &sysday';
+```
+
+### Macro Statements
+
+- begin with %
+- end with ;
+
+
+
+**%PUT text;**
+
+Writes text to SAS log.
+
+```
+12 %put Invalid Code!;  /* quotes not required */
+Invalid code!
+
+/* outputs list of auto macro variables */
+%put _automatic_;  
+
+/* Shorthand syntax */
+%put &=sysday;  /* SYSDAY=FRIDAY */
+
+/* print all user-defined macro vars */
+%put _user_;
+```
+
+### User-Defined Macro Variables
+
+**%LET variable=value*;**
+
+- Creates a macro variable and assigns a value
+- user-defined vars can be overwritten
+- can b 0 length (null), 64K max len
+- leading and trailing blanks removed
+- quotes would be stored as part of text
+
+```
+%let x=varlist  /* x -> varlist */
+
+/* can substitute on the left */
+%let &x=name age height;  /* varlist -> name age height
+
+
+%let units=4;
+proc print data=...;
+    where Quantity > &units;
+    var ...;
+    title "... &units ...";
+run;    
+
+
+%let date1=25may2011;
+%let date2=15jun2011;
+
+proc print ...;
+    where Order_date between "&date1"d and "&date2"d;
+run;
+
+/* writes macro var values to SAS log as they are resolved, useful for debugging */
+options symbolgen;
+
+options nosymbolgen; /* turns off */
+
+/* deletes a user-defined var from global symbol table */
+%symdel macro-variable(s);  /* releases memory */
+```
