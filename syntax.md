@@ -1614,3 +1614,34 @@ proc univariate data=... [nextrobs=X];  /* optionally limit # of extreme vals ou
     id foo;  /* displays val of identifying var */
 run;    
 ```
+
+
+# Output
+
+## Output Delivery System (ODS)
+
+```
+/* ODS statements are global */
+ods html file="&path\myreport.html"
+
+proc freq data=...;
+    tables ...;
+run;
+
+ods html close;
+
+
+/* Can use multiple ODS destinations */
+ods pdf file="&path\example.pdf";
+ods rtf file="*path\example.rtf";
+
+/* Some SAS Code */
+
+ods pdf close;
+ods rtf close; /* alternatively, ods _all_ close; */
+
+
+/* stylize output */
+ods dest ... style=SOME_STYLE;
+
+```
