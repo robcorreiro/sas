@@ -1936,3 +1936,78 @@ select ID, Gender, Salary, Salary*.10 as Bonus
     where calculated Bonus<3000;
 quit;
 ```
+
+### Ordering Rows
+
+```
+/* default is ascending */
+proc sql;
+select ID, Qtr1
+    from orion.employees
+    order by Qtr1 desc;
+quit;
+
+/* Applying labels and formats to columns */
+proc sql;
+title 'Max Quarterly Donation';  /* still global */
+select Employee_ID 'Employee_ID',  /* ANSI standard way to add a label */ 
+       "Max Donation is:',  /* can have a single columns which contains same text string across all */
+       max(Qtr1,Qtr2,Qtr3,Qtr4)
+           label='Maximum'  /* SAS-way to add label */
+           format=dollar5.
+    from employees
+    where ...
+    order by 3 desc, ID;  /* 2nd column in this case max of the Qtrs *
+quit;    
+
+/* Adds a Row # to each */
+proc sql number;
+...
+quit;
+```
+
+### Creating Tables
+
+```
+proc sql;
+create table orion.birthmonths as  /* results from query will be used to create and populate new data set */
+select Employee_Name as Name format=$25.,
+       City format=$25.,
+       month(Birth_Date) as BrithMonth
+         'Birth Month' format=3.
+    from orion.employee_payroll as p,  /* join tables */
+         orion.employee_addresses as a
+    where p.Employee_ID=a.Employee_ID
+        and Employee_Term_Date is missing  /* filtering */
+    order by BirthMonth,City,Name;
+quit;
+
+proc sql describe table orion.birthmonths;
+select * from orion.birthmonths;
+quit;
+
+/* sum down a column using SQL standard, different from SAS sum() */
+proc sql;
+select sum(Qtr) 'Total Quarter 1 Donations'
+    from orion.employee_donations;
+quit;
+
+Other summarizing functions: (SQL/SAS)
+AVG/MEAN
+COUNT/FREQ,N
+MAX/MAX
+MIN/MIN
+SUM/SUM
+...
+
+/* counts # of rows returned */
+proc sql;
+select count(*) as Count /* star returns all rows, using a column name returns non-missing vals */
+    from ...
+    where foo is missing;
+quit;    
+
+
+/* if you see remerging error, probably need to look at query */
+
+```
