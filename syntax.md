@@ -1839,3 +1839,100 @@ options mlogic;  /* default: nomlogic */
 %mend reports;
 
 ```
+
+### Macro Vars in DATA step
+
+```
+/* Cannot create macro vars in the data step */ 
+data order;
+    ...
+    if ... then do;
+        %let foot=No Internet Options
+    end;
+    else do;
+        %let foot=Some Internet Orders;
+    end;
+run;
+```
+
+
+**SYMPUTX(macro-variable, value);**
+
+Creates a macro var with a text value.
+
+```
+/* FIXED */
+data order;
+    ...
+    if ... then do;
+        call symputx('foot', 'No Internet Orders');
+    end;
+    else do;
+        call symputx('foot', 'Some Internet Orders');  /* can be refereced after DATA step execution */
+    end;
+run;
+```
+
+
+## SQL
+
+```
+proc sql; /* initialed with proc */
+    <statement(s)>;
+quit;  /* terminates sql proc */
+
+/* single select statement */
+proc sql;
+select ID, Gender, Salary  /* specifies columns and column order */
+    from work.employees
+    where Gender='F'
+    order by Salary desc;  /* semicolon ends */
+quit;
+
+
+/* Print all columns in a table **
+proc sql;
+select * from orion.employees;
+quit;
+
+/* Print columns and attributes in SAS log*/
+proc sql;
+describe table orion.employees;
+quit;
+
+
+/* Creating new variables/columns */
+proc sql;
+select ID, Salary, Salary*0.10 as Bonus
+  from orion.employees;
+quit;   
+
+
+/* distinct eliminates duplicate rows */
+proc sql;
+select distinct Department
+    from orion.employees;
+quit;
+
+
+/* subsetting with WHERE */
+proc sql select ID, Title, Salary
+    from ...
+    where Salary > 112000;
+quit;    
+
+
+/* columns used in WHERE must exist in table */
+proc sql;
+select ID, Gender, Salary, Salary*0.1 as Bonus
+    from orion.employees
+    where Bonus<3000;  /* WRONG because where is evaluated before select */
+quit;
+
+/* CORRECT using 'calculated' - SAS enhancement */
+proc sql;
+select ID, Gender, Salary, Salary*.10 as Bonus
+    from orion.employees
+    where calculated Bonus<3000;
+quit;
+```
