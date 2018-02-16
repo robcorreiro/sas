@@ -24,9 +24,26 @@ ls -ld /SASBackups/Metadata
 touch /SASBackups/Metadata/meta.confirm.rc
 ```
 
-## Meta Install/Config + Meta2 Install
+- Meta Install/Config + Meta2 Install
+- Meta2 Config + Meta3 Install
+- Meta3 Config + Copy JUnit -> Compute Install
 
-Validate Meta Config, copy instructions.html, run Metadata backup in SMC
+```sh
+mkdir -p /opt/sas/thirdparty/JUnit
+cp /SASdepot/ThirdParty/JUnit/junit-4.8.1.jar /opt/sas/thirdparty/JUnit/
+```
+
+- Compute Config, VA Install
+- VA Config, Midtier Install
+- Midtier config
+    
+
+
+# Detailed Validations
+
+## After Meta
+
+Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
 
 ```sh
 # On Meta
@@ -39,8 +56,9 @@ netstat -a | grep 8561
 /opt/sas/SASHome/SASManagementConsole/9.4/sasmc &
 ```
 
-## Meta2 Config + Meta3 Install
-- Validate Meta2 Config, copy instructions.html, run Metadata backup in SMC
+## After Meta2
+
+Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
 
 ```sh
 # On Meta2
@@ -53,14 +71,9 @@ netstat -a | grep 8561
 /opt/sas/SASHome/SASManagementConsole/9.4/sasmc &
 ```
 
-## Meta3 Config + Copy JUnit -> Compute Install
+## After Meta3 (Metadata Cluster)
 
-```sh
-mkdir -p /opt/sas/thirdparty/JUnit
-cp /SASdepot/ThirdParty/JUnit/junit-4.8.1.jar /opt/sas/thirdparty/JUnit/
-```
-
-After Meta3 config pass copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
 
 ```sh
 # On Meta3
@@ -85,9 +98,9 @@ sudo tar -cvzpf /opt/sas/resources/backups/after_cluster.tar.gz ./config
 ss start
 ```
 
-## Compute Config, VA Install
+## After Compute
 
-After computer config pass copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
 
 ```sh
 # On Compute
@@ -107,10 +120,14 @@ sudo tar -cvzpf /opt/sas/resources/backups/after_compute.tar.gz ./config
 ss start
 ```
 
-## VA Config, Midtier Install
+## Potential 2nd Config on Compute
 
-After VA config pass copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
-    
+Copy new Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+
+## After VA
+
+Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+
 ```sh
 # On VA
 alias ss=/opt/sas/config/Lev1/sas.servers
@@ -129,9 +146,9 @@ sudo tar -cvzpf /opt/sas/resources/backups/after_va.tar.gz ./config
 ss start
 ```
 
-## Midtier config
+## After Midtier
 
-After midtier config pass copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
     
 ```sh
 # On Midtier
@@ -139,13 +156,7 @@ alias ss=/opt/sas/config/Lev1/sas.servers
 ss status
 ```
 
-# Detailed Validations
-
-## After Metadata Cluster
-## After Compute
-## After VA
-## After Midtier
-    
+# References
 
 ## Directory Locations
 
