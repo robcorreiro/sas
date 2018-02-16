@@ -159,14 +159,14 @@ ss status
 ## Useful Aliases
 
 ```sh
-alias depot= cd /SASDepot
+alias depot=cd /SASDepot
 alias home=cd /opt/sas/SASHome
 alias ss=/opt/sas/config/Lev1/sas.servers
 alias dms=/opt/sas/SASHome/DataFluxDataManagementServer/2.7/dmserver/bin/dmsadmin
 alias vpo=/opt/sas/SASHome/SASVisualProcessOrchestrationServer/2.1/poserver/bin/dmsadmin
 ```
 
-## Backup after each config Pass
+## Backup after each config pass
 
 ```sh
 # if it doesn't exist
@@ -176,10 +176,12 @@ cd /opt/sas
 sudo tar -cvzpf /opt/sas/resources/backups/DESCRIPTION.tar.gz ./config
 ```
 
-INSTALLING QKBs MANUALLY
+## Installing QKBs manually
 
+```
 [sas@compute qkb]$ cd /opt/sas
 [sas@compute sas]$ gzip -c -d /SASdepot/SAS9.4M4/products/knwldgebseci__94150__lax__xx__sp0__1/qkb-ci-v27-lin64.tar.gz | tar xvf -
 [sas@compute sas]$ perl qkb/install.pl
+```
 
 TIME THE MIDTIER CONFIG - if longer than 2hours, let proctor know.
