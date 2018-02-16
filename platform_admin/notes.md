@@ -321,11 +321,21 @@ alias vpo=/opt/sas/SASHome/SASVisualProcessOrchestrationServer/2.1/poserver/bin/
 ## Backup after each config pass
 
 ```sh
-# if it doesn't exist
-mkdir /opt/sas/resources/backups
+#!/bin/bash
+
+ss=/opt/sas/config/Lev1/sas.servers
+mkdir -p /opt/sas/resources/backups
 
 cd /opt/sas
-sudo tar -cvzpf /opt/sas/resources/backups/DESCRIPTION.tar.gz ./config
+if [ $# -eq 0 ]; then
+    echo $1
+    sudo tar -czpf /opt/sas/resources/backups/$1.tar.gz ./config
+else
+    sudo tar -czpf /opt/sas/resources/backups/$(hostname).tar.gz ./config
+fi
+
+$ss start
+$ss status
 ```
 
 ## Installing QKBs manually
