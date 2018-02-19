@@ -318,26 +318,6 @@ alias dms=/opt/sas/SASHome/DataFluxDataManagementServer/2.7/dmserver/bin/dmsadmi
 alias vpo=/opt/sas/SASHome/SASVisualProcessOrchestrationServer/2.1/poserver/bin/dmsadmin
 ```
 
-## Backup after each config pass
-
-```sh
-#!/bin/bash
-
-ss=/opt/sas/config/Lev1/sas.servers
-mkdir -p /opt/sas/resources/backups
-
-cd /opt/sas
-if [ $# -eq 0 ]; then
-    echo $1
-    sudo tar -czpf /opt/sas/resources/backups/$1.tar.gz ./config
-else
-    sudo tar -czpf /opt/sas/resources/backups/$(hostname).tar.gz ./config
-fi
-
-$ss start
-$ss status
-```
-
 ## Installing QKBs manually
 
 ```
