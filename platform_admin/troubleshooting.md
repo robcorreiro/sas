@@ -43,7 +43,7 @@ Reference Instructions.html for the logs of each server.
  
 ## Object Spawner Logs on Compute 
  
-```
+```sh
 [sas@compute Logs]$ pwd 
 /opt/sas/config/Lev1/ObjectSpawner/Logs 
 ```
@@ -120,5 +120,13 @@ agent.setup.camIP=webapp.demo.sas.com
 
 # Then restart agent
 ./hq-agent.sh restart
+```
+
+## Wrong SAS Home Location
+
+Run `setup.exe` with the `-changesashome` option.
+
+```
+setup.exe –record –deploy –responsefile -changesashome D:\SAS\resources\client_install.txt
 ```
 
