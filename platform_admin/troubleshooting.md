@@ -1,6 +1,6 @@
 # Backups and Restoration
  
-```
+```sh
 # Backup
 /opt/sas/config/Lev1/sas.servers stop 
 /opt/sas/config/Lev1/sas.servers status 
@@ -36,7 +36,7 @@ Reference Instructions.html for the logs of each server.
  
 ## Metadata Logs 
  
-```
+```sh
 [sas@meta Logs]$ pwd 
 /opt/sas/config/Lev1/SASMeta/MetadataServer/Logs 
 ``` 
@@ -62,7 +62,7 @@ It's good to know how to start the following servers if something goes wrong.
 
 - **Dataflux Data Administration Server** on Compute tier (SASApp tier)
 
-```
+```sh
 # Config File - contains license, qkb path
 /opt/sas/SASHome/DataFluxDataManagementServer/2.7/dmserver/etc/app.cfg
 
@@ -85,7 +85,7 @@ This can affect being able to launch programs such as Enterprise Miner.
 
 Each machine has a file in `SASHome` called `sassw.config` which stores a few values including:
 
-```
+```sh
 SASENVIRONMENTSURL=http://webapp.demo.sas.com:7980/sas/sas-environment.xml
 ```
 
@@ -98,7 +98,7 @@ License files are located in `/SASdepot/SAS9.4M4/sid_files/<LICENSE>.txt`.
 
 Apply a new sid file and ignore what's alraedy there:
 
-```
+```sh
 /opt/sas/SASHome/SASDeploymentManager/9.4/sasdm.sh -nosidvalidate &
 ```
 
@@ -110,7 +110,7 @@ Without `-nosidvalidate` SDM would complain that you're adding a site number whi
 
 Within `agent.properties` the wrong value for Enviroment Manager (camIP) could be used.
 
-```
+```sh
 # File: /opt/sas/config/Lev1/Web/SASEnvironmentManager/agent-5.8.0-EE/conf/agent.properties
 # Fix value
 agent.setup.camIP=webapp.demo.sas.com
