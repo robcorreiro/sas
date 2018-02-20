@@ -3,14 +3,10 @@
 - SAS Installer USER/Pass, verify sudo access
 - Root Pass
 - Server Names
-- License Files
+- License Files location
 - /SASBackups showing your own data
-- SASHome location
-- Config location
 - Depot location
-- Plan file
-- Environment Manager host name (webapp.demo.sas.com)
-- Environments URL
+- Plan file location
 - Moba Sessions with correct machine names
 
 - Credentials
@@ -23,6 +19,43 @@
 # Plan
 
 Build Reference file.
+
+```
+INSTALL
+
+SASHome
+
+<SAS_HOME DIR>
+
+
+ENVIRONMENTS URL
+
+http://MIDTIER_URL:7980/sas/sas-environment.xml
+
+================================================================
+
+CONFIG
+
+<CONFIG DIR>
+
+META 1
+
+<SERVER>
+
+
+ENV MANAGER (MID TIER) HOST NAME
+
+<HOSTNAME>
+
+
+BACKUP LOC
+
+<BACKUP LOC>
+
+
+sudo tar czpf /opt/sas/resources/backups/after_X.tar.gz ./config
+```
+
 Setup MobaXTerm with sessions, verify login, sudo access, write permissions to /SASBackups/Metadata
 
 ```sh
@@ -42,22 +75,10 @@ touch /SASBackups/Metadata/meta.confirm.rc
 <depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/meta2_install.txt &
 ```
 
-**Meta2 Config**
-
-```sh
-<depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/meta2_config.txt &
-```
-
 **Meta3 Install**
 
 ```
 <depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/meta3_install.txt &
-```
-
-**Meta3 Config**
-
-```
-<depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/meta3_config.txt &
 ```
 
 **Compute Install**
@@ -67,6 +88,36 @@ mkdir -p /opt/sas/thirdparty/JUnit
 cp /SASdepot/ThirdParty/JUnit/junit-4.8.1.jar /opt/sas/thirdparty/JUnit/
 
 <depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/compute_install.txt &
+```
+
+**VA Install**
+
+```sh
+mkdir -p /opt/sas/thirdparty/JUnit
+cp /SASdepot/ThirdParty/JUnit/junit-4.8.1.jar /opt/sas/thirdparty/JUnit/
+
+<depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/va_install.txt &
+```
+
+**Midtier Install**
+
+```sh
+<depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/midtier_install.txt &
+```
+
+---
+
+**Meta2 Config**
+
+```sh
+<depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/meta2_config.txt &
+```
+
+
+**Meta3 Config**
+
+```
+<depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/meta3_config.txt &
 ```
 
 **Compute Config**
@@ -81,25 +132,10 @@ cp /SASdepot/ThirdParty/JUnit/junit-4.8.1.jar /opt/sas/thirdparty/JUnit/
 <depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/compute_fsc_config.txt &
 ```
 
-**VA Install**
-
-```sh
-mkdir -p /opt/sas/thirdparty/JUnit
-cp /SASdepot/ThirdParty/JUnit/junit-4.8.1.jar /opt/sas/thirdparty/JUnit/
-
-<depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/va_install.txt &
-```
-
 **VA Config**
 
 ```sh
 <depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/va_config.txt &
-```
-
-**Midtier Install**
-
-```sh
-<depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/midtier_install.txt &
 ```
 
 **Midtier config**
@@ -110,9 +146,7 @@ cp /SASdepot/ThirdParty/JUnit/junit-4.8.1.jar /opt/sas/thirdparty/JUnit/
 
 **Platform Suite on Compute (any time)**
 
-**Client Install (any time)**
-
-**Client Config (any time)**
+**Client Install/Config (any time)**
 
 ```
 # Might not be needed
@@ -125,7 +159,7 @@ setup.exe –record –deploy –responsefile D:\SAS\resources\client_install.tx
 setup.exe –record –deploy –responsefile D:\SAS\resources\client_config.txt
 ```
     
-
+---
 
 # Detailed Validations
 
@@ -154,9 +188,6 @@ alias ss=/opt/sas/config/Lev1/sas.servers
 ss status
 
 netstat -a | grep 8561
-
-# MetaData Backup in SMC
-/opt/sas/SASHome/SASManagementConsole/9.4/sasmc &
 ```
 
 ## After Meta3 (Metadata Cluster)
@@ -171,17 +202,15 @@ ss status
 
 netstat -a | grep 8561
 
-# MetaData Backup in SMC
-/opt/sas/SASHome/SASManagementConsole/9.4/sasmc &
-
 # if it doesn't exist
 mkdir /opt/sas/resources/backups
 
 # Stop sas.servers on: Meta3, Meta2, Meta1
 ss stop
 
+# MULTI-EXEC
 cd /opt/sas
-sudo tar -cvzpf /opt/sas/resources/backups/after_cluster.tar.gz ./config
+sudo tar czpf /opt/sas/resources/backups/after_cluster.tar.gz ./config
 
 # Start sas.servers on: Meta1, Meta2, Meta3
 ss start
@@ -196,36 +225,16 @@ Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validat
 alias ss=/opt/sas/config/Lev1/sas.servers
 ss status
 
-# Test EG on client
-
 # MetaData Backup in SMC
-# Backup after SAS Application Server config
-/opt/sas/SASHome/SASManagementConsole/9.4/sasmc &
 
 # Server Validations referencing Instructions.html
-# (SMC) SASApp - Connect Server
-# (SMC) SASApp - Stored Process Server
-# (SMC) SASApp - Workspace Server
-# (SMC) SASApp - Pooled Workspace Server
-
-# SASApp - SAS DATA Step Batch Server
-/opt/sas/config/Lev1/SASApp/BatchServer/sasbatch.sh
-
-# (SMC) Operating System Services Scheduling Server
-# (SMC - reference) SAS Web Infrastructure Platform Scheduling Services
-
-# Scheduling Services - Cache Locator
-/opt/sas/config/Lev1/Web/gemfire/instances/ins_41415/gemfire-locator.sh status
-
-# Scheduling Services - DIP JobRunner
-/opt/sas/config/Lev1/Web/Applications/SASWIPSchedulingServices9.4/dip/DIPJobRunner.sh status
 
 # Stop sas.servers on: Compute, Meta3, Meta2, Meta1
 ss stop
  
 # USE MULTI-EXEC
 cd /opt/sas
-sudo tar -cvzpf /opt/sas/resources/backups/after_compute.tar.gz ./config
+sudo tar czpf /opt/sas/resources/backups/after_compute.tar.gz ./config
 
 # Start sas.servers on: Meta1, Meta2, Meta3, Compute
 ss start
@@ -245,25 +254,18 @@ alias ss=/opt/sas/config/Lev1/sas.servers
 ss status
 
 # MetaData Backup in SMC
-# Backup after SAS VA App Server config
-/opt/sas/SASHome/SASManagementConsole/9.4/sasmc &
 
 # Server Validations referencing Instructions.html
-# (SMC) SASAppVA - Stored Process Server
-# (SMC) SASAppVA - Workspace Server
-# (SMC) SASAppVA - Pooled Workspace Server
 
 # SASAppVA - SAS DATA Step Batch Server
 /opt/sas/config/Lev1/SASAppVA/BatchServer/sasbatch.sh
-
-# (SMC) Operating System Services Scheduling Server
 
 # Stop sas.servers on: VA, Compute, Meta3, Meta2, Meta1
 ss stop
  
 # USE MULTI-EXEC
 cd /opt/sas
-sudo tar -cvzpf /opt/sas/resources/backups/after_va.tar.gz ./config
+sudo tar czpf /opt/sas/resources/backups/after_va.tar.gz ./config
 
 # Start sas.servers on: Meta1, Meta2, Meta3, Compute, VA
 ss start
@@ -283,21 +285,7 @@ ss status
 /opt/sas/SASHome/SASManagementConsole/9.4/sasmc &
 
 # Server Validations referencing Instructions.html
-# SAS Web Infrastructure Platform (Comment Service)
-# SAS Studio Mid-Tier
-# SAS Content Server
-# SAS Stored Process Web Application
-# SAS Web Administration Console
-# SAS Help Viewer for Midtier Applications
 ```
-
-## After Platform Suite
-
-Reference Course Notes.
-
-## After Client Config
-
-Copy Instructions.html from `D:\SAS\Config\Lev1\Documents`.
 
 
 ## Post Deployment Config
