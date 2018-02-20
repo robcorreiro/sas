@@ -3,11 +3,22 @@
 - SAS Installer USER/Pass, verify sudo access
 - Root Pass
 - Server Names
+- License Files
+- /SASBackups showing your own data
+- SASHome location
+- Config location
+- Depot location
+- Plan file
+- Environment Manager host name (webapp.demo.sas.com)
+- Environments URL
+- Moba Sessions with correct machine names
 
 - Credentials
     - sasadm@saspw
     - sastrust@saspw
     - sasdemo
+    - sassrv
+    - lsfadmin
 
 # Plan
 
@@ -150,6 +161,7 @@ netstat -a | grep 8561
 
 ## After Meta3 (Metadata Cluster)
 
+
 Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
 
 ```sh
@@ -183,6 +195,8 @@ Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validat
 # On Compute
 alias ss=/opt/sas/config/Lev1/sas.servers
 ss status
+
+# Test EG on client
 
 # MetaData Backup in SMC
 # Backup after SAS Application Server config
