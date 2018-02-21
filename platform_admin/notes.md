@@ -175,7 +175,8 @@ ss status
 netstat -a | grep 8561
 
 # MetaData Backup in SMC
-/opt/sas/SASHome/SASManagementConsole/9.4/sasmc &
+alias sasmc=/opt/sas/SASHome/SASManagementConsole/9.4/sasmc
+sasmc &
 ```
 
 ## After Meta2
@@ -238,6 +239,14 @@ sudo tar czpf /opt/sas/resources/backups/after_compute.tar.gz ./config
 
 # Start sas.servers on: Meta1, Meta2, Meta3, Compute
 ss start
+
+
+
+# Other Important
+
+# /opt/sas/SASHome/SASVisualProcessOrchestrationServer/2.1/poserver/bin/dmsadmin -status
+# /opt/sas/SASHome/DataFluxDataManagementServer/2.7/dmserver/bin/dmsadmin status
+# /opt/sas/config/Lev1/ObjectSpawner/ObjectSpawner.sh status
 ```
 
 ## Potential 2nd Config on Compute
