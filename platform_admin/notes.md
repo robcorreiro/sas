@@ -16,9 +16,6 @@
     - sassrv
     - lsfadmin
 
-# Plan
-
-Build Reference file.
 
 ```
 INSTALL
@@ -38,7 +35,7 @@ CONFIG
 
 <CONFIG DIR>
 
-META 1
+META
 
 <SERVER>
 
@@ -67,6 +64,8 @@ ls -ld /SASBackups/Metadata
 # Only on Meta
 touch /SASBackups/Metadata/meta.confirm.rc
 ```
+
+# Installation
 
 **Meta Install/Config + Meta2 Install**
 
@@ -106,6 +105,8 @@ cp /SASdepot/ThirdParty/JUnit/junit-4.8.1.jar /opt/sas/thirdparty/JUnit/
 ```
 
 ---
+
+# Configuration
 
 **Meta2 Config**
 
@@ -161,11 +162,11 @@ setup.exe –record –deploy –responsefile D:\SAS\resources\client_config.txt
     
 ---
 
-# Detailed Validations
+# Validation
 
 ## After Meta
 
-Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
 ```sh
 # On Meta
@@ -181,7 +182,7 @@ sasmc &
 
 ## After Meta2
 
-Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
 ```sh
 # On Meta2
@@ -194,7 +195,7 @@ netstat -a | grep 8561
 ## After Meta3 (Metadata Cluster)
 
 
-Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
 ```sh
 # On Meta3
@@ -219,7 +220,7 @@ ss start
 
 ## After Compute
 
-Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
 ```sh
 # On Compute
@@ -251,11 +252,11 @@ ss start
 
 ## Potential 2nd Config on Compute
 
-Copy new Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy new Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
 ## After VA
 
-Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
 ```sh
 # On VA
@@ -282,7 +283,7 @@ ss start
 
 ## After Midtier
 
-Copy Instructions.html from `/opt/sas/config/Lev1/Documents` and perform validation.
+Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
     
 ```sh
 # On Midtier
@@ -313,17 +314,9 @@ Reference Course Notes.
 
 # References
 
-## Directory Locations
-
-- depot - `/SASdepot/SAS9.4M4`
-- SASHome - `/opt/sas/SASHome`
-- Instructions.html `/opt/sas/config/Lev1/Documents`
-
 ## Useful Aliases
 
 ```sh
-alias depot=cd /SASDepot
-alias home=cd /opt/sas/SASHome
 alias ss=/opt/sas/config/Lev1/sas.servers
 alias dms=/opt/sas/SASHome/DataFluxDataManagementServer/2.7/dmserver/bin/dmsadmin
 alias vpo=/opt/sas/SASHome/SASVisualProcessOrchestrationServer/2.1/poserver/bin/dmsadmin
