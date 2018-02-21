@@ -1,4 +1,4 @@
-# Preinstall Reference File
+## Preinstall Reference File
 
 - SAS Installer USER/Pass, verify sudo access
 - Root Pass
@@ -69,7 +69,7 @@ ls -ld /SASBackups/Metadata
 touch /SASBackups/Metadata/meta.confirm.rc
 ```
 
-# Installation
+## Installation
 
 **Meta Install/Config**
 
@@ -115,7 +115,7 @@ cp /SASdepot/ThirdParty/JUnit/junit-4.8.1.jar /opt/sas/thirdparty/JUnit/
 
 ---
 
-# Configuration
+## Configuration
 
 **Meta2 Config**
 
@@ -171,9 +171,9 @@ setup.exe –record –deploy –responsefile D:\SAS\resources\client_config.txt
     
 ---
 
-# Validation
+## Validation
 
-## After Meta
+### After Meta
 
 Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
@@ -189,7 +189,7 @@ alias sasmc=/opt/sas/SASHome/SASManagementConsole/9.4/sasmc
 sasmc &
 ```
 
-## After Meta2
+### After Meta2
 
 Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
@@ -201,7 +201,7 @@ ss status
 netstat -a | grep 8561
 ```
 
-## After Meta3 (Metadata Cluster)
+### After Meta3 (Metadata Cluster)
 
 
 Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
@@ -227,7 +227,7 @@ sudo tar czpf /opt/sas/resources/backups/after_cluster.tar.gz ./config
 ss start
 ```
 
-## After Compute
+### After Compute
 
 Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
@@ -259,11 +259,11 @@ ss start
 # /opt/sas/config/Lev1/ObjectSpawner/ObjectSpawner.sh status
 ```
 
-## Potential 2nd Config on Compute
+### Potential 2nd Config on Compute
 
 Copy new Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
-## After VA
+### After VA
 
 Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
 
@@ -290,7 +290,7 @@ sudo tar czpf /opt/sas/resources/backups/after_va.tar.gz ./config
 ss start
 ```
 
-## After Midtier
+### After Midtier
 
 Copy Instructions.html from `<config_path>/Lev1/Documents` and perform validation.
     
@@ -321,9 +321,9 @@ Reference Course Notes.
 
 
 
-# References
+## References
 
-## Useful Aliases
+### Useful Aliases
 
 ```sh
 alias ss=/opt/sas/config/Lev1/sas.servers
@@ -334,7 +334,7 @@ alias dms=/opt/sas/SASHome/DataFluxDataManagementServer/2.7/dmserver/bin/dmsadmi
 alias vpo=/opt/sas/SASHome/SASVisualProcessOrchestrationServer/2.1/poserver/bin/dmsadmin
 ```
 
-## Installing QKBs manually
+### Installing QKBs manually
 
 ```
 [sas@compute qkb]$ cd /opt/sas
