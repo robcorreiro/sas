@@ -49,14 +49,18 @@ BACKUP LOC
 
 <BACKUP LOC>
 
-
+cd /opt/sas
 sudo tar czpf /opt/sas/resources/backups/after_X.tar.gz ./config
+
+cd /opt/sas
+sudo tar cpf /opt/sas/resources/backups/after_X.tar ./config
 ```
 
 Setup MobaXTerm with sessions, verify login, sudo access, write permissions to /SASBackups/Metadata
 
 ```sh
 # Run on each Meta node prior to install
+# MULTI-EXEC
 sudo whoami
 netstat -a | grep 8561
 ls -ld /SASBackups/Metadata
@@ -323,6 +327,9 @@ Reference Course Notes.
 
 ```sh
 alias ss=/opt/sas/config/Lev1/sas.servers
+alias sasmc=/opt/sas/SASHome/SASManagementConsole/9.4/sasmc
+
+# Compute Only
 alias dms=/opt/sas/SASHome/DataFluxDataManagementServer/2.7/dmserver/bin/dmsadmin
 alias vpo=/opt/sas/SASHome/SASVisualProcessOrchestrationServer/2.1/poserver/bin/dmsadmin
 ```
