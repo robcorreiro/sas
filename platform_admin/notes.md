@@ -67,10 +67,15 @@ touch /SASBackups/Metadata/meta.confirm.rc
 
 # Installation
 
-**Meta Install/Config + Meta2 Install**
+**Meta Install/Config**
 
 ```sh
 <depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/meta_install_config.txt &
+```
+
+**Meta2 Install**
+
+```sh
 <depot location>/setup.sh -record -deploy -responsefile /opt/sas/resources/meta2_install.txt &
 ```
 
