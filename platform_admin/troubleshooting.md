@@ -130,3 +130,18 @@ Run `setup.exe` with the `-changesashome` option.
 setup.exe –record –deploy –responsefile -changesashome D:\SAS\resources\client_install.txt
 ```
 
+
+## Platform Suite Removal
+
+The issue is if you put the wrong host in the LSF_MASTER_LIST parameter in the `install.config` file. Need to use **compute hostname** and NOT the metadata server.
+
+```sh
+# stop LSF-related processes
+ps -ef | grep lsf
+
+# remove these directories
+/opt/sas/thirdparty/share
+/opt/sas/thirdparty/pm
+/opt/sas/resources/pm_install
+```
+
