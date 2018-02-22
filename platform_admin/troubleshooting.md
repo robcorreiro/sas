@@ -1,4 +1,4 @@
-# Backups and Restoration
+## Backups and Restoration
  
 ```sh
 # Backup
@@ -56,7 +56,7 @@ Object Spawner uses sastrust to do its work. 
 SMC > Plugins > Environment Manager > Metadata Manager > Right Click on Active Server > Properties > Cluster tab 
 
 
-# Services NOT started by sas.servers
+## Services NOT started by sas.servers
 
 It's good to know how to start the following servers if something goes wrong.
 
@@ -79,7 +79,7 @@ These are started automatically after a successful config pass, but are NOT auto
 - **Environment Manger Agent (on each machine)**
 
 
-# Issue with Environment URL
+## Issue with Environment URL
 
 This can affect being able to launch programs such as Enterprise Miner.
 
@@ -92,7 +92,7 @@ SASENVIRONMENTSURL=http://webapp.demo.sas.com:7980/sas/sas-environment.xml
 Fix each machine which has the invalid URL.
 
 
-# Wrong License on VA
+## Wrong License on VA
 
 License files are located in `/SASdepot/SAS9.4M4/sid_files/<LICENSE>.txt`.
 
@@ -104,9 +104,9 @@ Apply a new sid file and ignore what's alraedy there:
 
 Without `-nosidvalidate` SDM would complain that you're adding a site number which doesn't exist in the current deployment.
 
-# Environment Agents
+## Environment Agents
 
-## Wrong Web Server on agent.properties file
+### Wrong Web Server on agent.properties file
 
 Within `agent.properties` the wrong value for Enviroment Manager (camIP) could be used.
 
@@ -122,7 +122,7 @@ agent.setup.camIP=webapp.demo.sas.com
 ./hq-agent.sh restart
 ```
 
-## Wrong SAS Home Location
+### Wrong SAS Home Location
 
 Run `setup.exe` with the `-changesashome` option.
 
