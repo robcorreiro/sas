@@ -62,3 +62,10 @@ Any changes to this file requires a restart of the metadata server.
 # Object Spawner
 
 - Reads `metaconfig.xml` file at start-up.
+
+
+## Logins
+
+Inbound logins, only fully qualified name required.
+
+Outbound, Authdomain, keyid, pass.
