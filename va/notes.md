@@ -28,10 +28,6 @@ Best Practice: dedicated host for LASR Server
 When mid tier struggling after adding many users (large # of concurrent users):
 SAS Web Application Tuning Guide
 
-Resources:
-
-http://sww.sas.com/blogs/wp/gate/3161/thinking-about-the-middle-tier-part-1/suksiw/2014/11/14
-http://sww.sas.com/blogs/wp/gate/3573/thinking-about-the-middle-tier-part-2/suksiw/2014/12/16
 
 ## VA MPP Architecture - Software
 
