@@ -42,24 +42,7 @@ If there are too many processes competing for limiting resources (cpu, mem, io),
 - SAS Users: performance
 - IT department: governance, more control over SAS processes, less downtime
 
-## Software Architecture (overview)
 
-**SAS Software**
-
-    - sasgrid script
-    - grdsvc_enable statement
-    - sasgsub
-    - Env Mgr + SMC plugins
-    
-** Third Party**: managing/monitoring using Platform Computing (IBM) or Hadoop 
-
-Gives ability to run commands, programs, scripts on any machine 
-in the grid and monitor the state of each machine and make scheduling decisions based on that information.
-
-    - LSF
-    - Process Manager
-    - Grid Monitoring Server
-    - Platform Computing Mid-tier Services
     
 # SAS Grid Manager (SGM)
 
@@ -152,4 +135,106 @@ Because we can assume shared file system in place:
 Note: Each Metadata server AND each mid tier requires DEDICATED config directories.
 
 ## Networking
+
+- DNS for hostname resolution
+
+LSF provides own hosts file for:
+
+- servers with more than one NIC (multi-homing)
+- overriding site-specific DNS/hostname issues
+
+## Virtualization
+
+- easy scaling by cloning nodes
+- maintenance/testing: multiple versions of same machines (with / without hotfix)
+
+
+# Grid Software Architecture
+
+**SAS Software**
+
+    - sasgrid script
+    - grdsvc_enable statement
+    - sasgsub
+    - Env Mgr + SMC plugins
+    
+** Third Party**: managing/monitoring using Platform Computing (IBM) or Hadoop 
+
+Gives ability to run commands, programs, scripts on any machine 
+in the grid and monitor the state of each machine and make scheduling decisions based on that information.
+
+    - LSF
+    - Process Manager
+    - Grid Monitoring Server
+    - Platform Computing Mid-tier Services
+
+## Components
+
+NOTE: BASE SAS and SAS/CONNECT are ALWAYS a pre-requisite.
+
+**SAS Grid Manager Control Server**: two types, for **Platform** or **Hadoop**.
+
+- SAS Grid Manager Control Server OR Grid Manager for Hadoop Control Server
+    - SAS Grid Manager Plug-in for SAS Environment Manager OR Grid Manager for Hadoop
+    - Platform Web Services for SAS
+    - SAS LASR Analytics Server Access Tools
+    - SAS TKGrid for Hadoop deployments
+
+For Hadoop Control Server deployments: only runs on Linux, does NOT contain OEM or mid tier components.
+
+**SAS Metadata Server**: Platform LSF for SAS (optional, used for HA) license not available for Hadoop grids.
+
+**SAS Grid Manager Nodes**: Licensed based on total amount of cores for the whole grid.
+
+- SAS Grid Manager setinit
+- SAS LASR Analytics Server Access Tools: client components required to transfer data to separately licensed LASR server.
+- Platform LSF for SAS 
+
+**SAS Grid ManagerClient (optional)**: Classic Base SAS installed on desktop, 
+acts as client who submits code to grid.
+
+**SAS Grid Manager Thin Client**: CLI utility SASGSUB which permits user to submit SAS code to grid.
+
+**SAS Grid Manager Administrative Clients**: not available for Hadoops grids, 
+because Hadoop already contains all required mgmt interfaces.
+
+
+## Platform Suite for SAS (PSS)
+
+IBM Platform Computing components bundled with SAS Grid Manager.
+
+- **Load Sharing Facility (LSF)**: makes up the grid
+    - dispatches jobs, monitors, spreads workload, returns status of each job
+    - installed on ALL machines in cluster (not required on dedicated metadata or mid tiers)
+    - made up of LIM, RES, SBD (daemons)
+    - includes EGO (enterprise Grid Orchestrator) responsible for HA features.
+
+- **Process Manager (PM)**: job scheduler for grid.
+    - controls submission of scheduled jobs (and manages dependecies between jobs) to grid
+    - allows for flows to be created in Schedule Manager or DI studio to run tasks on grid
+
+- **Grid Management Services (GMS)**: provides admin control from SMC (optional)
+    - typically installed only on Grid Control server
+
+- **Platform Web Services (PWS)**: used by Env Mgr to report/track/monitor the grid.
+    - deployed as SASServer14_1 on the mid tier (along with SAS Grid Mgr Environment Mgr Module)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
