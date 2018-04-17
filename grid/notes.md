@@ -96,38 +96,60 @@ Algorithm for load-balancing SAS services: Workspace server, Stored Process, Poo
 
 # Grid Hardware Architecture
 
+## Servers
+
+Compute nodes must be on server-grade machines (not desktops). Best practice is to keep all machines as similar as possible
+
+- software licensing often based on CPU core count
+- save on HW costs by using smaller (cheapers) hosts instead of a single large (expensive) server
+- lean towards linux / unix variant for grid deployments over Windows
+
 ## Shared Storage
 
 Typically a SAN with a dedicated storage technology for fast I/O throughput.
 
 - central location for file storage
 - accessible by all grid machines
-- want / "should" have 100-150MB/sec/core
+- minimum throughput capacity: 100-150MB/s/core
+- SAN will need a clustered file system
+    - handles concurrency of data access, needs read and write
+    - not normally supplied, likely requires additional SW purchase (expensive)
 
-## Servers
+**Storage Designs**
 
-Compute nodes must be on server-grade machines (not desktops).
+Goal: Spread out I/O for availability and performance. 
 
-- software licensing often based on CPU core count
-- save on HW costs by using smaller (cheapers) hosts instead of a single large (expensive) server
-- lean towards linux / unix variant for grid deployments over Windows
-- best practice is to keep all machines as similar as possible
+Examples:
+
+- UTILLOC on dedicated storage: separates SAS threaded procedures from SASWORK
+- SASWORK on shared storage: allows for checkpoint/restart (if grid hosts fails mid-job), better parallelization 
+(SAS process can "see" other's WORK libraries)
+
+1. Shared SASWORK within Shared Storage with servers having their own dedicated area for SASWORK.
+2. Shared SASWORK + Dedicated SASWORK within Shared Storage
+
+Careful cleaup and monitoring of these locations limits downsides.
 
 ## Shared File System (required)
 
-### Share for Platform Suite
+- Share for **Platform Suite**: LSF cluster needs single location to store files
+    - all machines in cluster need access
+    - contains LSF config files
+- Share for **Data**: each grid session needs to be able to access same data, same LIBNAME and path
+    - don't know which machine the program will run on.
+- Share for **SASGSUB**: needs a grid work dir accessibly from clients and grid nodes 
+- Share for **other clients**: EG / AMO needs shared area for tmp data
+    - path requested by SDW at install time    
+- Share for **HA**
+- Share for **deployed jobs**: programs need to be stored in central location for all nodes to access.
 
-- LSF cluster needs single location to store files
-- all machines in cluster need access
-- contains LSF config files
+Because we can assume shared file system in place:
 
-**Share for Data**
+- Share for **LSF binaries** (unix only): install LSF once and use on all grid hosts.
+- Share for **SAS binaries** (unix only): install once and use on all grid hosts.
+- Share for **SAS Compute Tier config**: config once and use on all grid hosts.
 
-- each grid session needs to be able to access same data, same LIBNAME and path
-- don't know which machine the program will run on.
+Note: Each Metadata server AND each mid tier requires DEDICATED config directories.
 
-**Share for SASGSUB**
+## Networking
 
-- needs a grid work dir accessibly from clients and grid nodes 
-
-**Share for other clients**
