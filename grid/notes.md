@@ -94,5 +94,40 @@ Algorithm for load-balancing SAS services: Workspace server, Stored Process, Poo
 - Object Spawner acts as a client to get jobs running on grid machines
 - multiple connections coming from the client to grid sessions
 
+# Grid Hardware Architecture
 
+## Shared Storage
 
+Typically a SAN with a dedicated storage technology for fast I/O throughput.
+
+- central location for file storage
+- accessible by all grid machines
+- want / "should" have 100-150MB/sec/core
+
+## Servers
+
+Compute nodes must be on server-grade machines (not desktops).
+
+- software licensing often based on CPU core count
+- save on HW costs by using smaller (cheapers) hosts instead of a single large (expensive) server
+- lean towards linux / unix variant for grid deployments over Windows
+- best practice is to keep all machines as similar as possible
+
+## Shared File System (required)
+
+### Share for Platform Suite
+
+- LSF cluster needs single location to store files
+- all machines in cluster need access
+- contains LSF config files
+
+**Share for Data**
+
+- each grid session needs to be able to access same data, same LIBNAME and path
+- don't know which machine the program will run on.
+
+**Share for SASGSUB**
+
+- needs a grid work dir accessibly from clients and grid nodes 
+
+**Share for other clients**
