@@ -220,20 +220,51 @@ IBM Platform Computing components bundled with SAS Grid Manager.
     - deployed as SASServer14_1 on the mid tier (along with SAS Grid Mgr Environment Mgr Module)
 
 
+# Deployment
+
+## Requirements 
+
+Note: This is NOT a complete list.
+
+### Networking
+
+Reference: http://sww.sas.com/saspedia/Port_numbers_in_SAS_9.4
+
+```
+netstat -a --notrim --numeric-ports --program | egrep "mbatchd|mbschd|sbatchd|lim|res|pem|pim|egosc|vemkd|gabd|jfd|httpd|mysqld|python" | egrep -v STREAM
+```
+All machines participating in the cluster have to be able to ping each other
+If the /etc/hosts file contains: 127.0.0.1 <<actual_hostname>> LSF will fail. But 127.0.0.1 localhost is OK.
+It is possible to create a hosts file in the LSF config folder to overwrite local hosts files, for LSF $LSF_ENVDIR\hosts.
+
+### Users
+
+- LSF primary administrator is used to perform the install of LSF, PM and GMS (should be the admin of LSF and of PM)
+- Needs to exist on all machines and be identical (password, UID/GID)
+- ROOT access required to perform some operations on Unix installs
+- Only ROOT can start the LSF, PM, GMS processes (Unix)
+- LSFUSER is used when WRS reports are refreshed using PM instead of the In-Process Scheduler
 
 
+- Windows has specific minimum required priviledges for the LSF primary admin on EACH grid node.
 
+Note: CANNOT share **binaries** across **Windows** servers, but CAN share **configuration files** (best practice).
 
+### Middle Tier
 
+**Platform Web Services**: third-party web app provided by Platform Computing. 
 
+- serves as backend REST service for SAS Grid Manager Module for SAS Environment Manager
+- platform LSF client must be installed on mid tier host(s)
+- SAS WIP Data Server 
+    - stores config/data for the Grid Manager module for Env Mgr.
+    - PWS requires a database and only supports PostgreSQL
+- Middle Tier host(s) must be allowed to connect to the SAS Grid
+- Put the SAS Middle Tier host name(s) in the LSF cluster file
 
-
-
-
-
-
-
-
+- PWS must be run as an LSF administrator
+- Users must be registered in the SAS metadata repository
+- PWS must be deployed into a dedicated SAS Web Application Server. (if "Typical" path, will be deployed to SASServer14)
 
 
 
